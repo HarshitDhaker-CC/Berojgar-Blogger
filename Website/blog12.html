@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Performance Optimization - Berojgar Blogger</title>
+    <link rel="stylesheet" href="blog1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Copy all CSS from blog3.html */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #eaeaea;
+            --hover-color: #357abd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --input-bg: #f8f9fa;
+            --card-bg: rgba(15, 15, 35, 0.7);
+            --card-border: rgba(0, 247, 255, 0.2);
+            --button-gradient: linear-gradient(135deg, #ff3cac, #784ba0);
+            --button-hover-gradient: linear-gradient(135deg, #784ba0, #ff3cac);
+        }
+        /* Rest of the CSS from blog3.html */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Web Performance Optimization</h1>
+        <nav>
+            <a href="../Website/trial.html">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <article class="blog-full">
+        <h1>Web Performance Optimization</h1>
+        <p class="blog-meta">Published on April 1, 2025 | By Berojgar Blogger</p>
+
+        <img src="blog12.jpg" alt="Web Performance" class="blog-image">
+
+        <p>Optimizing web performance is crucial for providing a better user experience and improving search engine rankings. Let's explore key strategies for web performance optimization.</p>
+
+        <h2>1. Image Optimization</h2>
+        <p>Learn techniques for optimizing images, including compression, lazy loading, and using modern image formats like WebP.</p>
+        <img src="blog12.jpg" alt="Image Optimization" class="blog-image">
+
+        <h2>2. Code Minification and Bundling</h2>
+        <p>Understanding how to minify and bundle JavaScript, CSS, and HTML files to reduce load times and improve performance.</p>
+
+        <h2>3. Caching Strategies</h2>
+        <p>Implementing effective caching strategies using browser caching, service workers, and CDN integration.</p>
+
+        <h2>4. Critical Rendering Path</h2>
+        <p>Optimizing the critical rendering path to improve page load times and First Contentful Paint (FCP).</p>
+        <img src="blog12.jpg" alt="Rendering Optimization" class="blog-image">
+
+        <h2>5. Performance Monitoring</h2>
+        <p>Tools and techniques for monitoring and analyzing web performance metrics to identify optimization opportunities.</p>
+
+        <h2>Conclusion</h2>
+        <p>Implementing these performance optimization techniques will help create faster, more efficient web applications that users love.</p>
+
+        <div class="blog-interactions">
+            <div class="post-meta">
+                <button class="btn-like" id="likeButton">
+                    <i class="fas fa-heart"></i>
+                    <span class="like-count" id="likeCount">0</span>
+                </button>
+                <button class="btn-comment" onclick="toggleComments('blog12')">
+                    <i class="fas fa-comment"></i>
+                    <span class="comment-count" id="comment-count-blog12">0</span>
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-section-blog12" style="display: none;">
+                <div class="comments-list" id="comments-list-blog12">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form class="comment-form" id="comment-form-blog12" onsubmit="handleComment(event, 'blog12')">
+                    <input type="text" placeholder="Your Name" required>
+                    <textarea placeholder="Your Comment" required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="../Website/trial.html" class="back-button">← Back to Home</a>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const blogId = 'blog12';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            document.getElementById('comment-count-blog12').textContent = comments.length;
+            
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+        });
+        
+        function handleLike() {
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            likeCount.textContent = newLikes;
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 500);
+        }
+        
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        function handleComment(event, postId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const commentInput = form.querySelector('textarea');
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                const newComment = {
+                    name: name,
+                    comment: comment,
+                    date: new Date().toISOString()
+                };
+                
+                const comments = JSON.parse(localStorage.getItem(`${postId}_comments`) || '[]');
+                comments.push(newComment);
+                localStorage.setItem(`${postId}_comments`, JSON.stringify(comments));
+                
+                document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+                displayComments(comments);
+                form.reset();
+            }
+        }
+        
+        function displayComments(comments) {
+            const commentsList = document.getElementById('comments-list-blog12');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.name}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

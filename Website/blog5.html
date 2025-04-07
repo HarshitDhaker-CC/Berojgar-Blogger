@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding JavaScript ES6 - Berojgar Blogger</title>
+    <link rel="stylesheet" href="blog1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Copy all CSS from blog3.html */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #eaeaea;
+            --hover-color: #357abd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --input-bg: #f8f9fa;
+            --card-bg: rgba(15, 15, 35, 0.7);
+            --card-border: rgba(0, 247, 255, 0.2);
+            --button-gradient: linear-gradient(135deg, #ff3cac, #784ba0);
+            --button-hover-gradient: linear-gradient(135deg, #784ba0, #ff3cac);
+        }
+        /* Rest of the CSS from blog3.html */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Understanding JavaScript ES6</h1>
+        <nav>
+            <a href="../Website/trial.html">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <article class="blog-full">
+        <h1>Understanding JavaScript ES6</h1>
+        <p class="blog-meta">Published on March 26, 2025 | By Berojgar Blogger</p>
+
+        <img src="blog5.jpg" alt="JavaScript ES6" class="blog-image">
+
+        <p>ES6 (ECMAScript 2015) brought significant improvements to JavaScript, making code more readable and maintainable. Let's explore the key features that make ES6 a game-changer.</p>
+
+        <h2>1. Arrow Functions</h2>
+        <p>Arrow functions provide a concise syntax for writing function expressions. They also handle 'this' binding differently, making them perfect for callbacks and method definitions.</p>
+        <img src="blog5.jpg" alt="Arrow Functions" class="blog-image">
+
+        <h2>2. Template Literals</h2>
+        <p>Template literals allow embedded expressions and multiline strings, making string interpolation and formatting much more intuitive and readable.</p>
+
+        <h2>3. Destructuring Assignment</h2>
+        <p>Destructuring makes it possible to unpack values from arrays or properties from objects into distinct variables, simplifying data manipulation.</p>
+
+        <h2>4. Classes and Modules</h2>
+        <p>ES6 introduced proper class syntax and module system, enabling better organization of code and true object-oriented programming in JavaScript.</p>
+        <img src="blog5.jpg" alt="Classes and Modules" class="blog-image">
+
+        <h2>5. Promises and Async/Await</h2>
+        <p>The Promise API and async/await syntax revolutionized asynchronous programming in JavaScript, making it more manageable and readable.</p>
+
+        <h2>Conclusion</h2>
+        <p>ES6 features have become essential tools in modern JavaScript development, improving code quality and developer productivity significantly.</p>
+
+        <div class="blog-interactions">
+            <div class="post-meta">
+                <button class="btn-like" id="likeButton">
+                    <i class="fas fa-heart"></i>
+                    <span class="like-count" id="likeCount">0</span>
+                </button>
+                <button class="btn-comment" onclick="toggleComments('blog5')">
+                    <i class="fas fa-comment"></i>
+                    <span class="comment-count" id="comment-count-blog5">0</span>
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-section-blog5" style="display: none;">
+                <div class="comments-list" id="comments-list-blog5">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form class="comment-form" id="comment-form-blog5" onsubmit="handleComment(event, 'blog5')">
+                    <input type="text" placeholder="Your Name" required>
+                    <textarea placeholder="Your Comment" required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="../Website/trial.html" class="back-button">← Back to Home</a>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const blogId = 'blog5';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            document.getElementById('comment-count-blog5').textContent = comments.length;
+            
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+        });
+        
+        function handleLike() {
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            likeCount.textContent = newLikes;
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 500);
+        }
+        
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        function handleComment(event, postId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const commentInput = form.querySelector('textarea');
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                const newComment = {
+                    name: name,
+                    comment: comment,
+                    date: new Date().toISOString()
+                };
+                
+                const comments = JSON.parse(localStorage.getItem(`${postId}_comments`) || '[]');
+                comments.push(newComment);
+                localStorage.setItem(`${postId}_comments`, JSON.stringify(comments));
+                
+                document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+                displayComments(comments);
+                form.reset();
+            }
+        }
+        
+        function displayComments(comments) {
+            const commentsList = document.getElementById('comments-list-blog5');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.name}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

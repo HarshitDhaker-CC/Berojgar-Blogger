@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Mobile Layouts</title>
+    <link rel="stylesheet" href="blog1.css">
+    <style>
+        /* Like button styles */
+        .like-button {
+            background: linear-gradient(135deg, #00ff9d, #00b8ff);
+            color: #e0e0ff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .like-button:hover {
+            background: linear-gradient(135deg, #00b8ff, #00ff9d);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .like-button.liked {
+            animation: pulse 0.5s ease;
+        }
+        
+        /* Like counter styles */
+        .like-counter {
+            background: rgba(15, 15, 35, 0.7);
+            border-radius: 16px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .like-counter:hover {
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .like-count-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+            line-height: 1;
+        }
+        
+        .like-count-label {
+            font-size: 1rem;
+            color: #e0e0ff;
+            margin-top: 5px;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Responsive Mobile Layouts</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <section class="blog-full">
+        <img src="images/mobile_layouts.jpg" alt="Responsive Mobile Layouts" class="blog-image">
+        <p class="blog-meta">Published on March 26, 2025 | By Berojgar Blogger</p>
+
+        <h2>Introduction</h2>
+        <p>Creating responsive mobile layouts is essential for delivering a seamless user experience on all devices. This guide will help you design mobile-friendly interfaces that adapt perfectly to any screen size.</p>
+
+        <h2>1. Use a Mobile-First Approach</h2>
+        <p>Start designing for smaller screens first. This approach helps prioritize essential content and ensures your layout scales smoothly to larger devices.</p>
+
+        <h2>2. Flexible Grid Systems</h2>
+        <p>Utilize CSS Flexbox or CSS Grid for building fluid layouts. These systems offer powerful, responsive capabilities that adjust seamlessly across different screen sizes.</p>
+
+        <h2>3. Media Queries</h2>
+        <p>Implement media queries to customize your design for specific screen widths. This ensures an optimized experience on various devices.</p>
+
+        <pre><code>@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}</code></pre>
+
+        <h2>4. Responsive Images</h2>
+        <p>Use the <code>srcset</code> attribute for images to serve appropriate sizes based on the user's device, improving load time and image clarity.</p>
+
+        <pre><code><img src="image-small.jpg" srcset="image-large.jpg 1024w, image-medium.jpg 768w" alt="Responsive Image"></code></pre>
+
+        <h2>5. Viewport Meta Tag</h2>
+        <p>Ensure your pages render correctly on all devices by including the viewport meta tag:</p>
+
+        <pre><code><meta name="viewport" content="width=device-width, initial-scale=1.0"></code></pre>
+
+        <h2>6. Touch-Friendly Design</h2>
+        <p>Design with touch interactions in mind. Use larger buttons (at least 48px) and ensure sufficient spacing for a better touch experience.</p>
+
+        <h2>7. Optimize Performance</h2>
+        <p>Reduce load times by optimizing images, using lazy loading, and minimizing CSS/JavaScript. Fast performance is key for mobile users.</p>
+
+        <h2>8. Test Across Devices</h2>
+        <p>Regularly test your design on multiple devices and screen sizes. Use browser developer tools and services like BrowserStack for comprehensive testing.</p>
+
+        <h2>Conclusion</h2>
+        <p>Responsive mobile layouts are crucial for modern web development. By following these best practices, you can create a seamless and accessible experience for all users.</p>
+
+        <div class="blog-interactions">
+            <div class="like-section">
+                <div class="like-counter">
+                    <span class="like-count-number" id="likeCountDisplay">0</span>
+                    <span class="like-count-label">Likes</span>
+                </div>
+                <button id="likeButton" class="like-button">
+                    <span class="like-icon">❤️</span>
+                    <span id="likeCount">0</span> Likes
+                </button>
+            </div>
+            
+            <div class="comment-section">
+                <h3>Comments</h3>
+                <div id="commentsList" class="comments-list">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form id="commentForm" class="comment-form">
+                    <div class="form-group">
+                        <input type="text" id="commenterName" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="commentText" placeholder="Your Comment" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-button">Back to Home</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Blog post ID - unique identifier for this blog post
+        const blogId = 'blog7';
+        
+        // Initialize likes and comments from local storage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load likes
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            document.getElementById('likeCountDisplay').textContent = likes;
+            
+            // Load comments
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            // Set up event listeners
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+            
+            const commentForm = document.getElementById('commentForm');
+            if (commentForm) {
+                commentForm.addEventListener('submit', handleComment);
+            }
+        });
+        
+        // Handle like button click
+        function handleLike() {
+            const likeCountElement = document.getElementById('likeCount');
+            const likeCountDisplayElement = document.getElementById('likeCountDisplay');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            // Update display
+            likeCountElement.textContent = newLikes;
+            likeCountDisplayElement.textContent = newLikes;
+            
+            // Save to local storage
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            // Visual feedback
+            const likeButton = document.getElementById('likeButton');
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 1000);
+        }
+        
+        // Handle comment submission
+        function handleComment(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('commenterName');
+            const commentInput = document.getElementById('commentText');
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+                comments.push({
+                    name,
+                    comment,
+                    date: new Date().toISOString()
+                });
+                
+                // Save to local storage
+                localStorage.setItem(`${blogId}_comments`, JSON.stringify(comments));
+                
+                // Clear form
+                nameInput.value = '';
+                commentInput.value = '';
+                
+                // Update display
+                displayComments(comments);
+            }
+        }
+        
+        // Display comments
+        function displayComments(comments) {
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <strong>${comment.name}</strong>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-body">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

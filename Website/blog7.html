@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trends in Mobile App Development - Berojgar Blogger</title>
+    <link rel="stylesheet" href="blog1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Copy all CSS from blog3.html */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #eaeaea;
+            --hover-color: #357abd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --input-bg: #f8f9fa;
+            --card-bg: rgba(15, 15, 35, 0.7);
+            --card-border: rgba(0, 247, 255, 0.2);
+            --button-gradient: linear-gradient(135deg, #ff3cac, #784ba0);
+            --button-hover-gradient: linear-gradient(135deg, #784ba0, #ff3cac);
+        }
+        /* Rest of the CSS from blog3.html */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trends in Mobile App Development</h1>
+        <nav>
+            <a href="../Website/trial.html">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <article class="blog-full">
+        <h1>Trends in Mobile App Development</h1>
+        <p class="blog-meta">Published on March 27, 2025 | By Berojgar Blogger</p>
+
+        <img src="blog7.jpg" alt="Mobile App Development" class="blog-image">
+
+        <p>The mobile app development landscape is constantly evolving. Let's explore the latest trends shaping the future of mobile applications in 2025.</p>
+
+        <h2>1. AI-Powered Applications</h2>
+        <p>Artificial Intelligence is revolutionizing mobile apps through personalized experiences, predictive analytics, and smart automation. Learn how AI integration is becoming a standard feature in modern apps.</p>
+        <img src="blog7.jpg" alt="AI in Mobile Apps" class="blog-image">
+
+        <h2>2. Cross-Platform Development</h2>
+        <p>Frameworks like Flutter and React Native continue to dominate, enabling developers to build high-performance apps for multiple platforms with a single codebase.</p>
+
+        <h2>3. 5G Integration</h2>
+        <p>With 5G networks becoming widespread, mobile apps are leveraging increased speeds and lower latency for enhanced real-time features and immersive experiences.</p>
+
+        <h2>4. Augmented Reality (AR) Apps</h2>
+        <p>AR technology is transforming user experiences in retail, gaming, and education. Discover how developers are creating engaging AR applications.</p>
+        <img src="blog7.jpg" alt="AR Applications" class="blog-image">
+
+        <h2>5. Progressive Web Apps (PWAs)</h2>
+        <p>PWAs continue to bridge the gap between web and mobile applications, offering offline functionality and native app-like experiences.</p>
+
+        <h2>Conclusion</h2>
+        <p>Staying updated with these trends is crucial for developers looking to create innovative and successful mobile applications in 2025 and beyond.</p>
+
+        <div class="blog-interactions">
+            <div class="post-meta">
+                <button class="btn-like" id="likeButton">
+                    <i class="fas fa-heart"></i>
+                    <span class="like-count" id="likeCount">0</span>
+                </button>
+                <button class="btn-comment" onclick="toggleComments('blog7')">
+                    <i class="fas fa-comment"></i>
+                    <span class="comment-count" id="comment-count-blog7">0</span>
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-section-blog7" style="display: none;">
+                <div class="comments-list" id="comments-list-blog7">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form class="comment-form" id="comment-form-blog7" onsubmit="handleComment(event, 'blog7')">
+                    <input type="text" placeholder="Your Name" required>
+                    <textarea placeholder="Your Comment" required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="../Website/trial.html" class="back-button">← Back to Home</a>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const blogId = 'blog7';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            document.getElementById('comment-count-blog7').textContent = comments.length;
+            
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+        });
+        
+        function handleLike() {
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            likeCount.textContent = newLikes;
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 500);
+        }
+        
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        function handleComment(event, postId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const commentInput = form.querySelector('textarea');
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                const newComment = {
+                    name: name,
+                    comment: comment,
+                    date: new Date().toISOString()
+                };
+                
+                const comments = JSON.parse(localStorage.getItem(`${postId}_comments`) || '[]');
+                comments.push(newComment);
+                localStorage.setItem(`${postId}_comments`, JSON.stringify(comments));
+                
+                document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+                displayComments(comments);
+                form.reset();
+            }
+        }
+        
+        function displayComments(comments) {
+            const commentsList = document.getElementById('comments-list-blog7');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.name}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

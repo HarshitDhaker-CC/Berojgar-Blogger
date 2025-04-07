@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Best Practices in 2025 - Berojgar Blogger</title>
+    <link rel="stylesheet" href="blog1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Copy all CSS from blog2.html */
+        /* Like button styles */
+        .like-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--light-text);
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 20px;
+            position: relative;
+            overflow: visible;
+        }
+        
+        /* ... rest of the CSS from blog2.html ... */
+        
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #eaeaea;
+            --hover-color: #357abd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --input-bg: #f8f9fa;
+            --card-bg: rgba(15, 15, 35, 0.7);
+            --card-border: rgba(0, 247, 255, 0.2);
+            --button-gradient: linear-gradient(135deg, #ff3cac, #784ba0);
+            --button-hover-gradient: linear-gradient(135deg, #784ba0, #ff3cac);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SEO Best Practices in 2025</h1>
+        <nav>
+            <a href="../Website/trial.html">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <article class="blog-full">
+        <h1>SEO Best Practices in 2025</h1>
+        <p class="blog-meta">Published on March 26, 2025 | By Berojgar Blogger</p>
+
+        <img src="blog4.jpg" alt="SEO Best Practices" class="blog-image">
+
+        <p>As search engines become more sophisticated, SEO strategies must evolve. Here are the essential SEO practices that will help your website rank higher in 2025.</p>
+
+        <h2>1. AI-Driven Content Optimization</h2>
+        <p>Artificial Intelligence is revolutionizing how search engines understand content. Learn how to optimize your content for AI algorithms while maintaining natural readability for human visitors.</p>
+        <img src="blog4.jpg" alt="AI Content Optimization" class="blog-image">
+
+        <h2>2. Voice Search Optimization</h2>
+        <p>With the rise of voice-activated devices, optimizing for voice search has become crucial. Understand how to structure your content to capture voice search traffic effectively.</p>
+
+        <h2>3. Core Web Vitals</h2>
+        <p>Google's Core Web Vitals have become more important than ever. Learn how to optimize loading performance, interactivity, and visual stability of your pages.</p>
+
+        <h2>4. Mobile-First Indexing</h2>
+        <p>Mobile optimization is no longer optional. Discover how to ensure your website provides an excellent mobile experience while maintaining SEO best practices.</p>
+        <img src="blog4.jpg" alt="Mobile Optimization" class="blog-image">
+
+        <h2>5. E-A-T Principles</h2>
+        <p>Expertise, Authoritativeness, and Trustworthiness (E-A-T) continue to be crucial factors. Learn how to establish and demonstrate these qualities on your website.</p>
+
+        <h2>Conclusion</h2>
+        <p>Staying ahead in SEO requires constant adaptation to new technologies and search engine algorithms. Implementing these practices will help ensure your website remains competitive in 2025 and beyond.</p>
+
+        <div class="blog-interactions">
+            <div class="post-meta">
+                <button class="btn-like" id="likeButton">
+                    <i class="fas fa-heart"></i>
+                    <span class="like-count" id="likeCount">0</span>
+                </button>
+                <button class="btn-comment" onclick="toggleComments('blog4')">
+                    <i class="fas fa-comment"></i>
+                    <span class="comment-count" id="comment-count-blog4">0</span>
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-section-blog4" style="display: none;">
+                <div class="comments-list" id="comments-list-blog4">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form class="comment-form" id="comment-form-blog4" onsubmit="handleComment(event, 'blog4')">
+                    <input type="text" placeholder="Your Name" required>
+                    <textarea placeholder="Your Comment" required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="../Website/trial.html" class="back-button">← Back to Home</a>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Blog post ID - unique identifier for this blog post
+        const blogId = 'blog4';
+        
+        // Initialize likes and comments from local storage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load likes
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            
+            // Load comments
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            // Update comment count
+            document.getElementById('comment-count-blog4').textContent = comments.length;
+            
+            // Set up event listeners
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+        });
+        
+        // Handle like button click
+        function handleLike() {
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            // Update display
+            likeCount.textContent = newLikes;
+            
+            // Save to local storage
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            // Visual feedback
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 500);
+        }
+        
+        // Toggle comments section
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        // Handle comment submission
+        function handleComment(event, postId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const commentInput = form.querySelector('textarea');
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                // Create new comment object
+                const newComment = {
+                    name: name,
+                    comment: comment,
+                    date: new Date().toISOString()
+                };
+                
+                // Get existing comments
+                const comments = JSON.parse(localStorage.getItem(`${postId}_comments`) || '[]');
+                
+                // Add new comment
+                comments.push(newComment);
+                
+                // Save to local storage
+                localStorage.setItem(`${postId}_comments`, JSON.stringify(comments));
+                
+                // Update comment count
+                document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+                
+                // Display comments
+                displayComments(comments);
+                
+                // Clear form
+                form.reset();
+            }
+        }
+        
+        // Display comments
+        function displayComments(comments) {
+            const commentsList = document.getElementById('comments-list-blog4');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.name}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

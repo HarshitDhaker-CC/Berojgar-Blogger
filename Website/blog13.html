@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility in Web Design - Berojgar Blogger</title>
+    <link rel="stylesheet" href="blog1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Copy all CSS from blog3.html */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #eaeaea;
+            --hover-color: #357abd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --input-bg: #f8f9fa;
+            --card-bg: rgba(15, 15, 35, 0.7);
+            --card-border: rgba(0, 247, 255, 0.2);
+            --button-gradient: linear-gradient(135deg, #ff3cac, #784ba0);
+            --button-hover-gradient: linear-gradient(135deg, #784ba0, #ff3cac);
+        }
+        /* Rest of the CSS from blog3.html */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Accessibility in Web Design</h1>
+        <nav>
+            <a href="../Website/trial.html">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <article class="blog-full">
+        <h1>Accessibility in Web Design</h1>
+        <p class="blog-meta">Published on April 2, 2025 | By Berojgar Blogger</p>
+
+        <img src="blog13.jpg" alt="Web Accessibility" class="blog-image">
+
+        <p>Creating accessible websites is not just a legal requirement but a moral obligation to ensure the web is usable by everyone. Let's explore key principles of web accessibility.</p>
+
+        <h2>1. Semantic HTML</h2>
+        <p>Understanding and implementing semantic HTML elements to provide better structure and meaning for assistive technologies.</p>
+        <img src="blog13.jpg" alt="Semantic HTML" class="blog-image">
+
+        <h2>2. ARIA Roles and Attributes</h2>
+        <p>Using ARIA (Accessible Rich Internet Applications) roles and attributes to enhance accessibility for dynamic content.</p>
+
+        <h2>3. Keyboard Navigation</h2>
+        <p>Ensuring all website functionality is accessible through keyboard navigation for users who can't use a mouse.</p>
+
+        <h2>4. Color Contrast and Typography</h2>
+        <p>Implementing proper color contrast ratios and readable typography to make content accessible to users with visual impairments.</p>
+        <img src="blog13.jpg" alt="Color Contrast" class="blog-image">
+
+        <h2>5. Alternative Text and Captions</h2>
+        <p>Providing alternative text for images and captions for multimedia content to ensure information is accessible to all users.</p>
+
+        <h2>Conclusion</h2>
+        <p>Implementing these accessibility best practices helps create inclusive web experiences that work for everyone, regardless of their abilities.</p>
+
+        <div class="blog-interactions">
+            <div class="post-meta">
+                <button class="btn-like" id="likeButton">
+                    <i class="fas fa-heart"></i>
+                    <span class="like-count" id="likeCount">0</span>
+                </button>
+                <button class="btn-comment" onclick="toggleComments('blog13')">
+                    <i class="fas fa-comment"></i>
+                    <span class="comment-count" id="comment-count-blog13">0</span>
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-section-blog13" style="display: none;">
+                <div class="comments-list" id="comments-list-blog13">
+                    <!-- Comments will be displayed here -->
+                </div>
+                <form class="comment-form" id="comment-form-blog13" onsubmit="handleComment(event, 'blog13')">
+                    <input type="text" placeholder="Your Name" required>
+                    <textarea placeholder="Your Comment" required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="../Website/trial.html" class="back-button">← Back to Home</a>
+    </article>
+
+    <footer>
+        <p>&copy; 2025 Berojgar Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const blogId = 'blog13';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const likes = localStorage.getItem(`${blogId}_likes`) || '0';
+            document.getElementById('likeCount').textContent = likes;
+            
+            const comments = JSON.parse(localStorage.getItem(`${blogId}_comments`) || '[]');
+            displayComments(comments);
+            
+            document.getElementById('comment-count-blog13').textContent = comments.length;
+            
+            const likeButton = document.getElementById('likeButton');
+            if (likeButton) {
+                likeButton.addEventListener('click', handleLike);
+            }
+        });
+        
+        function handleLike() {
+            const likeButton = document.getElementById('likeButton');
+            const likeCount = document.getElementById('likeCount');
+            const currentLikes = parseInt(localStorage.getItem(`${blogId}_likes`) || '0');
+            const newLikes = currentLikes + 1;
+            
+            likeCount.textContent = newLikes;
+            localStorage.setItem(`${blogId}_likes`, newLikes.toString());
+            
+            likeButton.classList.add('liked');
+            setTimeout(() => {
+                likeButton.classList.remove('liked');
+            }, 500);
+        }
+        
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+        
+        function handleComment(event, postId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const commentInput = form.querySelector('textarea');
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            
+            if (name && comment) {
+                const newComment = {
+                    name: name,
+                    comment: comment,
+                    date: new Date().toISOString()
+                };
+                
+                const comments = JSON.parse(localStorage.getItem(`${postId}_comments`) || '[]');
+                comments.push(newComment);
+                localStorage.setItem(`${postId}_comments`, JSON.stringify(comments));
+                
+                document.getElementById(`comment-count-${postId}`).textContent = comments.length;
+                displayComments(comments);
+                form.reset();
+            }
+        }
+        
+        function displayComments(comments) {
+            const commentsList = document.getElementById('comments-list-blog13');
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.name}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.comment}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 
