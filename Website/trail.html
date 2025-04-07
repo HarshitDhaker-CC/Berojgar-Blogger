@@ -1172,7 +1172,6 @@ document.querySelector('.header-search input').addEventListener('keyup', functio
     function viewFullBlog(blogId) {
       const userBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
       const blog = userBlogs.find(b => b.id === blogId);
-      const currentUser = localStorage.getItem('userName');
       
       if (blog) {
         // Store the current blog in localStorage for viewing
