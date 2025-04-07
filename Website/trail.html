@@ -65,6 +65,114 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+
+    .add-blog-button {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #1e3c72, #2a5298);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+    }
+
+    .add-blog-button:hover {
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .back-to-top {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e3c72;
+      font-size: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: fixed;
+      bottom: 110px;
+      right: 35px;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .add-blog-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+
+      .back-to-top {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        bottom: 90px;
+        right: 25px;
+      }
+    }
+
+    /* Add delete button styles */
+    .delete-blog {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 68, 68, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0;
+      z-index: 10;
+    }
+
+    .post-card {
+      position: relative;
+    }
+
+    .post-card:hover .delete-blog {
+      opacity: 1;
+    }
+
+    .delete-blog:hover {
+      background: #ff0000;
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      .delete-blog {
+        opacity: 1;
+        width: 32px;
+        height: 32px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -171,6 +279,48 @@
     <div class="container">
       <h2 class="section-title">Latest Posts</h2>
       <div class="posts-grid">
+        <script>
+          // Display user-submitted blogs
+          const userBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+          const currentUser = localStorage.getItem('userName');
+          
+          userBlogs.reverse().forEach(blog => {
+            document.write(`
+              <article class="post-card" data-post-id="${blog.id}">
+                ${blog.author === currentUser ? `
+                  <button class="delete-blog" onclick="deleteBlog('${blog.id}')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                ` : ''}
+                <div class="post-image">
+                  <img src="${blog.image}" alt="${blog.title}">
+                </div>
+                <div class="post-content">
+                  <h3>${blog.title}</h3>
+                  <p>${blog.description}</p>
+                  <small>Posted by: ${blog.author}</small>
+                  <div class="post-meta">
+                    <button class="btn-like" data-post-id="${blog.id}" onclick="handleLike('${blog.id}')">
+                      <i class="fas fa-heart"></i> <span class="like-count" id="like-count-${blog.id}">${blog.likes}</span>
+                    </button>
+                    <button class="btn-comment" data-post-id="${blog.id}" onclick="toggleComments('${blog.id}')">
+                      <i class="fas fa-comment"></i> <span class="comment-count" id="comment-count-${blog.id}">${blog.comments.length}</span>
+                    </button>
+                  </div>
+                  <div class="comments-section" id="comments-section-${blog.id}" style="display: none;">
+                    <div class="comments-list" id="comments-list-${blog.id}"></div>
+                    <form class="comment-form" id="comment-form-${blog.id}" onsubmit="handleComment(event, '${blog.id}')">
+                      <input type="text" placeholder="Your Name" required>
+                      <textarea placeholder="Your Comment" required></textarea>
+                      <button type="submit">Post Comment</button>
+                    </form>
+                  </div>
+                  <a href="#" onclick="viewFullBlog('${blog.id}')" class="btn btn-read">Read More</a>
+                </div>
+              </article>
+            `);
+          });
+        </script>
         <!-- Blog Post 1 -->
         <article class="post-card" data-post-id="blog1">
           <div class="post-image">
@@ -675,8 +825,13 @@
     </div>
   </footer>
 
-
-  <a href="#hero" class="back-to-top"><i class="icon-up-arrow"></i></a>
+  <button class="add-blog-button" onclick="checkLoginAndRedirect()">
+    <i class="fas fa-plus"></i>
+  </button>
+  
+  <a href="#hero" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
 
   <script src="trial.js"></script>
   <script src="api.js"></script>
@@ -998,6 +1153,166 @@ document.querySelector('.header-search input').addEventListener('keyup', functio
       
       // Show success message
       alert('Thank you for subscribing to our newsletter!');
+    }
+  </script>
+
+  <script>
+    function checkLoginAndRedirect() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (!isLoggedIn) {
+        alert('Please login to add a blog post');
+        window.location.href = '../newLogin.html';
+      } else {
+        window.location.href = 'addBlog.html';
+      }
+    }
+  </script>
+
+  <script>
+    function viewFullBlog(blogId) {
+      const userBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+      const blog = userBlogs.find(b => b.id === blogId);
+      const currentUser = localStorage.getItem('userName');
+      
+      if (blog) {
+        // Store the current blog in localStorage for viewing
+        localStorage.setItem('currentBlog', JSON.stringify(blog));
+        // Create and open the blog view page
+        const blogWindow = window.open('', '_blank');
+        blogWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>${blog.title}</title>
+            <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:300,400" rel="stylesheet">
+            <link rel="stylesheet" href="trial.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+            <style>
+              body {
+                font-family: 'Roboto', sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                max-width: 800px;
+                margin: 0 auto;
+              }
+              .blog-header {
+                text-align: center;
+                margin-bottom: 30px;
+                position: relative;
+              }
+              .blog-image {
+                width: 100%;
+                max-height: 400px;
+                object-fit: cover;
+                border-radius: 8px;
+                margin-bottom: 20px;
+              }
+              .blog-meta {
+                color: #666;
+                font-size: 0.9em;
+                margin-bottom: 20px;
+              }
+              .blog-content {
+                white-space: pre-wrap;
+              }
+              .back-button {
+                display: inline-block;
+                padding: 10px 20px;
+                background: #1e3c72;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                margin-bottom: 20px;
+              }
+              .delete-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px 20px;
+                background: #ff4444;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: all 0.3s ease;
+              }
+              .delete-button:hover {
+                background: #cc0000;
+              }
+            </style>
+          </head>
+          <body>
+            <a href="trail.html" class="back-button">← Back to Home</a>
+            <div class="blog-header">
+              <h1>${blog.title}</h1>
+              ${blog.author === currentUser ? `
+                <button class="delete-button" onclick="deleteBlog('${blog.id}')">
+                  <i class="fas fa-trash"></i> Delete Blog
+                </button>
+              ` : ''}
+              <div class="blog-meta">
+                Posted by ${blog.author} on ${new Date(blog.timestamp).toLocaleDateString()}
+              </div>
+              <img src="${blog.image}" alt="${blog.title}" class="blog-image">
+            </div>
+            <div class="blog-content">
+              ${blog.content}
+            </div>
+
+            <script>
+              function deleteBlog(blogId) {
+                if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+                  // Get existing blogs
+                  const blogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+                  
+                  // Find the blog index
+                  const blogIndex = blogs.findIndex(blog => blog.id === blogId);
+                  
+                  if (blogIndex !== -1) {
+                    // Remove the blog
+                    blogs.splice(blogIndex, 1);
+                    
+                    // Save back to localStorage
+                    localStorage.setItem('userBlogs', JSON.stringify(blogs));
+                    
+                    // Close this window and refresh the parent window
+                    window.opener.location.reload();
+                    window.close();
+                  }
+                }
+              }
+            </script>
+          </body>
+          </html>
+        `);
+      }
+    }
+  </script>
+
+  <script>
+    function deleteBlog(blogId) {
+      if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+        // Get existing blogs
+        const blogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+        
+        // Find the blog index
+        const blogIndex = blogs.findIndex(blog => blog.id === blogId);
+        
+        if (blogIndex !== -1) {
+          // Remove the blog
+          blogs.splice(blogIndex, 1);
+          
+          // Save back to localStorage
+          localStorage.setItem('userBlogs', JSON.stringify(blogs));
+          
+          // Refresh the page to show updated content
+          window.location.reload();
+        }
+      }
     }
   </script>
 </body>
